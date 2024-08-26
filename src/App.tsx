@@ -1,12 +1,16 @@
-import { useState } from "react"
-import { useAppDispatch, useAppSelector } from "./lib/redux/hooks/useRedux"
-import { decrement, increment, incrementByAmount } from "./lib/redux/slices/counter-slice"
+import { useState } from 'react'
+import { useAppDispatch, useAppSelector } from './lib/redux/hooks/useRedux'
+import {
+  decrement,
+  increment,
+  incrementByAmount,
+} from './lib/redux/slices/counter-slice'
 
 export function App() {
   const [amountToIncrement, setAmountToIncrement] = useState(0)
 
   const dispatch = useAppDispatch()
-  
+
   const { value } = useAppSelector(state => state.counter)
 
   function handleIncrement() {

@@ -3,8 +3,8 @@ import counterSlice from './slices/counter-slice'
 
 export const store = configureStore({
   reducer: {
-    counter: counterSlice
-  }
+    counter: counterSlice,
+  },
 })
 
 export type RootState = ReturnType<typeof store.getState>
