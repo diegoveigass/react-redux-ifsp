@@ -27,7 +27,7 @@ export function App() {
   }
 
   return (
-    <div className="app">
+    <div>
       <div>
         <button onClick={handleIncrement}>+</button>
         <span>{value}</span>
