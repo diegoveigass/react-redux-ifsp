@@ -1,10 +1,12 @@
 /* eslint-disable @stylistic/max-len */
 import { NotepadText, PlusCircle, Trash } from 'lucide-react'
 import logoImg from './assets/logo.svg'
-import { CheckedIcon } from './components/Checked'
+import { useDeleteTodoMutation, useGetTodosQuery, useUpdateTodoMutation } from './lib/redux/slices/todo-api'
 
 export function App() {
-  const isEmpty = false
+  const { data: todos } = useGetTodosQuery()
+  const [updateTodo] = useUpdateTodoMutation()
+  const [deleteTodo] = useDeleteTodoMutation()
 
   return (
     <div className="h-screen">
@@ -37,7 +39,7 @@ export function App() {
             </div>
           </header>
 
-          {isEmpty
+          {todos && todos.length <= 0
             ? (
               <div className="flex items-center justify-center px-16 py-6 flex-col border-t border-t-gray-700">
                 <NotepadText className="size-14 text-gray-700" />
@@ -49,35 +51,31 @@ export function App() {
               )
             : (
               <ul className="space-y-3">
-                <li className="flex items-center justify-between p-4 rounded-lg bg-gray-800 gap-3">
-                  <input
-                    type="checkbox" id="1" className="peer"
-                  />
-                  <label htmlFor="1" className="line-clamp-2 peer-checked:opacity-30">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi temporibus doloribus fugit? Odit quidem quod consectetur debitis nulla animi cumque qui iste libero. Dolorem, amet. Error adipisci molestias cumque ipsam!</label>
-                  <button className="group hover:bg-gray-700 p-1 rounded-md">
-                    <Trash className="size-4 text-gray-400 group-hover:text-red-600" />
-                  </button>
-                </li>
-
-                <li className="flex items-center justify-between p-4 rounded-lg bg-gray-800 gap-3">
-                  <input
-                    type="checkbox" id="1" className="peer"
-                  />
-                  <label htmlFor="1" className="line-clamp-2 peer-checked:opacity-30">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi temporibus doloribus fugit? Odit quidem quod consectetur debitis nulla animi cumque qui iste libero. Dolorem, amet. Error adipisci molestias cumque ipsam!</label>
-                  <button className="group hover:bg-gray-700 p-1 rounded-md">
-                    <Trash className="size-4 text-gray-400 group-hover:text-red-600" />
-                  </button>
-                </li>
-
-                <li className="flex items-center justify-between p-4 rounded-lg bg-gray-800 gap-3">
-                  <input
-                    type="checkbox" id="1" className="peer"
-                  />
-                  <label htmlFor="1" className="line-clamp-2 peer-checked:opacity-30">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi temporibus doloribus fugit? Odit quidem quod consectetur debitis nulla animi cumque qui iste libero. Dolorem, amet. Error adipisci molestias cumque ipsam!</label>
-                  <button className="group hover:bg-gray-700 p-1 rounded-md">
-                    <Trash className="size-4 text-gray-400 group-hover:text-red-600" />
-                  </button>
-                </li>
+                {todos?.map((todo) => {
+                  return (
+                    <li key={todo.id} className="flex items-center justify-between p-4 rounded-lg bg-gray-800 gap-3">
+                      <input
+                        type="checkbox" id={todo.id} className="peer"
+                        defaultChecked={!!todo.finishedDate}
+                        onChange={(event) => {
+                          updateTodo({
+                            id: todo.id,
+                            title: todo.title,
+                            finishedDate: event.target.checked
+                              ? new Date()
+                              : null,
+                          })
+                        }}
+                      />
+                      <label htmlFor={todo.id} className="mr-auto line-clamp-2 peer-checked:opacity-30">
+                        {todo.title}
+                      </label>
+                      <button className="group hover:bg-gray-700 p-1 rounded-md" onClick={() => deleteTodo({ id: todo.id })}>
+                        <Trash className="size-4 text-gray-400 group-hover:text-red-600" />
+                      </button>
+                    </li>
+                  )
+                })}
               </ul>
               )}
         </div>
