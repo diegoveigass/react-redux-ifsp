@@ -8,28 +8,42 @@ interface Todo {
 
 export const todoApi = createApi({
   reducerPath: 'todoApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3333/todos' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3333/' }),
   tagTypes: ['get-todo'],
   endpoints: (builder) => ({
     getTodos: builder.query<Todo[], void>({
-      query: () => '',
+      query: () => '/todos',
       providesTags: ['get-todo'],
     }),
-    updateTodo: builder.mutation<Todo, Partial<Todo> & Pick<Todo, 'id'>>({
+    updateTodo: builder.mutation<Todo, Pick<Todo, 'id' | 'finishedDate'>>({
       query: ({ id, ...patch }) => ({
-        url: `/${id}`,
+        url: `todos/${id}`,
         method: 'PATCH',
         body: patch,
       }),
+      invalidatesTags: ['get-todo'],
     }),
     deleteTodo: builder.mutation<void, Pick<Todo, 'id'>>({
       query: ({ id }) => ({
-        url: `/${id}`,
+        url: `todos/${id}`,
         method: 'DELETE',
+      }),
+      invalidatesTags: ['get-todo'],
+    }),
+    createTodo: builder.mutation<void, Pick<Todo, 'id' | 'title'>>({
+      query: ({ id, title }) => ({
+        url: 'todos',
+        body: { id, title, finishedDate: null },
+        method: 'POST',
       }),
       invalidatesTags: ['get-todo'],
     }),
   }),
 })
 
-export const { useGetTodosQuery, useUpdateTodoMutation, useDeleteTodoMutation } = todoApi
+export const {
+  useGetTodosQuery,
+  useUpdateTodoMutation,
+  useDeleteTodoMutation,
+  useCreateTodoMutation,
+} = todoApi

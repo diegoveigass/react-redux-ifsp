@@ -1,9 +1,14 @@
 {
   "todos": [
     {
-      "id": "1",
-      "title": "Ir ao supermercado",
-      "finishedDate": "2024-08-27T19:21:28.829Z"
+      "id": "1724789388080",
+      "title": "Fazer arroz",
+      "finishedDate": "2024-08-27T20:09:50.471Z"
+    },
+    {
+      "id": "1724789398203",
+      "title": "Tomar banho",
+      "finishedDate": null
     }
   ]
 }
