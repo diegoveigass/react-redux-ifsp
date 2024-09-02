@@ -2,7 +2,7 @@
 import { NotepadText, PlusCircle, Trash } from 'lucide-react'
 import logoImg from './assets/logo.svg'
 import { useAppDispatch, useAppSelector } from './lib/redux/hooks/useRedux'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { addTodo, deleteTodo, toggleTodoFinished } from './lib/redux/slices/todo-slice'
 
 export function App() {
